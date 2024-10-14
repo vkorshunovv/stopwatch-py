@@ -5,14 +5,16 @@ from PyQt5.QtCore import QTimer, QTime, Qt
 class Stopwatch(QWidget):
     def __init__(self):
         super().__init__()
-        self.time = QTime(0,0,0,0)
-        self.time_label = QLabel("00:00:00:00")
+        self.time = QTime(0, 0, 0, 0)
+        self.time_label = QLabel("00:00:00.00", self)
         self.start_button = QPushButton("Start", self)
         self.stop_button = QPushButton("Stop", self)
         self.reset_button = QPushButton("Reset", self)
         self.timer = QTimer(self)
+        self.timer.setInterval(10)
+        self.update_display_counter = 0 
         self.initUI()
-        
+         
     def initUI(self):
         self.setWindowTitle("Stopwatch")
         
@@ -32,10 +34,9 @@ class Stopwatch(QWidget):
         vbox.addLayout(hbox)
         
         self.setStyleSheet("""
-                QPushButton, QLabel {
+                QPushButton, QLabel{
                     padding: 20px;
-                    font-weight: semi-bold;
-                    font-family: Inter;
+                    font-weight: bold;
                 }                   
                 QPushButton {
                     font-size: 50px; 
@@ -48,21 +49,38 @@ class Stopwatch(QWidget):
                 }
         """)
         
+        self.start_button.clicked.connect(self.start)
+        self.stop_button.clicked.connect(self.stop)
+        self.reset_button.clicked.connect(self.reset)
+        self.timer.timeout.connect(self.update_display)
+        
     
     def start(self):
-        pass
+        self.timer.start()
 
     def stop(self):
-        pass
+        self.timer.stop()
     
     def reset(self):
-        pass
+        self.timer.stop()
+        self.time = QTime(0, 0, 0, 0)
+        self.time_label.setText(self.format_time(self.time)) 
     
     def format_time(self, time):
-        pass
+        hours = time.hour()
+        minutes = time.minute()
+        seconds = time.second()
+        milliseconds = time.msec() // 10
+        
+        return f"{hours:02}:{minutes:02}:{seconds:02}.{milliseconds:02}"
     
     def update_display(self):
-        pass
+        self.time = self.time.addMSecs(10)
+        
+        self.update_display_counter += 1
+        if self.update_display_counter >= 10:
+            self.time_label.setText(self.format_time(self.time))
+            self.update_display_counter = 0 
     
     
 if __name__ == "__main__":
