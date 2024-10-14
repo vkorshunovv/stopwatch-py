@@ -13,9 +13,58 @@ class Stopwatch(QWidget):
         self.timer = QTimer(self)
         self.initUI()
         
-    def initUI():
-        pass 
+    def initUI(self):
+        self.setWindowTitle("Stopwatch")
+        
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.time_label)
+        
+        self.setLayout(vbox)
+        
+        self.time_label.setAlignment(Qt.AlignCenter) 
+        
+        hbox = QHBoxLayout()
+        
+        hbox.addWidget(self.start_button)
+        hbox.addWidget(self.stop_button)
+        hbox.addWidget(self.reset_button)
+        
+        vbox.addLayout(hbox)
+        
+        self.setStyleSheet("""
+                QPushButton, QLabel {
+                    padding: 20px;
+                    font-weight: semi-bold;
+                    font-family: Inter;
+                }                   
+                QPushButton {
+                    font-size: 50px; 
+                }
+                QLabel {
+                    font-size: 120px;
+                    background-color: #c1f5e8;
+                    border-radius: 20px;
+                    color: #383838;
+                }
+        """)
+        
+    
+    def start(self):
+        pass
 
+    def stop(self):
+        pass
+    
+    def reset(self):
+        pass
+    
+    def format_time(self, time):
+        pass
+    
+    def update_display(self):
+        pass
+    
+    
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     stopwatch = Stopwatch()
